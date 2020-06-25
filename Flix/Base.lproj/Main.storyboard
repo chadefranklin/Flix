@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Movies View Controller-->
+        <!--Movies-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MoviesViewController" sceneMemberID="viewController">
@@ -52,6 +52,7 @@
                                             <outlet property="posterView" destination="gE0-jZ-Qwf" id="kL9-iP-VI5"/>
                                             <outlet property="synopsisLabel" destination="t9q-SM-Qpk" id="TEV-0J-2YV"/>
                                             <outlet property="titleLabel" destination="WY5-8Z-ajN" id="gVK-Gp-pZD"/>
+                                            <segue destination="Gv5-Tl-TKc" kind="show" id="Fo7-4a-aWY"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -60,7 +61,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="D41-v4-Ss2"/>
+                    <navigationItem key="navigationItem" title="Movies" id="D41-v4-Ss2"/>
                     <connections>
                         <outlet property="moviesTableView" destination="xOD-kd-9xu" id="hSb-cH-jiJ"/>
                     </connections>
@@ -68,6 +69,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="100.44642857142857"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="rfx-FX-MB3">
+            <objects>
+                <viewController id="Gv5-Tl-TKc" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CuV-Xh-SU4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="3FW-ic-kr2"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ksj-6q-Btn"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J0v-kJ-FEh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1825" y="89"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3Sw-DH-7aW">

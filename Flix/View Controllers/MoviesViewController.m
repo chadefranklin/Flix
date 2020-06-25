@@ -29,7 +29,9 @@
     [self fetchMovies];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.moviesTableView addSubview:self.refreshControl];
+    [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
+    //[self.moviesTableView addSubview:self.refreshControl];
+    [self.moviesTableView insertSubview:self.refreshControl atIndex:0];
 }
 
 /*
@@ -98,6 +100,7 @@
                // TODO: Store the movies in a property to use elsewhere
                // TODO: Reload your table view data
            }
+        [self.refreshControl endRefreshing];
        }];
     [task resume];
 }
