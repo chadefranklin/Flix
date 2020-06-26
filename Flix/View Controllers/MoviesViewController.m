@@ -7,6 +7,7 @@
 //
 
 #import "MoviesViewController.h"
+#import "MovieDetailsViewController.h"
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
 
@@ -34,15 +35,22 @@
     [self.moviesTableView insertSubview:self.refreshControl atIndex:0];
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    UITableViewCell *tappedCell = sender;
+    NSIndexPath *indexPath = [self.moviesTableView indexPathForCell:tappedCell];
+    NSDictionary *movie = self.movies[indexPath.row];
+    
+    MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
+    movieDetailsViewController.movie = movie;
 }
-*/
+
 
 //were named tableView by default
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
