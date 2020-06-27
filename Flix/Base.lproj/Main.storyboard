@@ -40,7 +40,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9q-SM-Qpk">
-                                                    <rect key="frame" x="126" y="58" width="268" height="94"/>
+                                                    <rect key="frame" x="126" y="49" width="268" height="103"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <string key="text">After an earthquake destroys their underwater station, six researchers must navigate two miles along the dangerous, unknown depths of the ocean floor to make it to safety in a race against time.</string>
                                                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="28"/>
@@ -58,18 +58,23 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="ImU-Ue-Tet">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="D41-v4-Ss2"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="ImU-Ue-Tet" id="Kdy-ry-zHy"/>
                         <outlet property="moviesTableView" destination="xOD-kd-9xu" id="hSb-cH-jiJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="138" y="818"/>
+            <point key="canvasLocation" x="137.68115942028987" y="817.63392857142856"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="9d6-u4-jla">
@@ -113,17 +118,18 @@
                                         <rect key="frame" x="142" y="204" width="264" height="67"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VxG-36-SkA">
                                         <rect key="frame" x="8" y="335" width="398" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <color key="backgroundColor" red="0.067802784974093311" green="0.067802784974093311" blue="0.067802784974093311" alpha="0.84705882352941175" colorSpace="custom" customColorSpace="displayP3"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="0kf-1z-GKy"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="HAo-JZ-bfw"/>
                             </scrollView>
@@ -143,13 +149,46 @@
             </objects>
             <point key="canvasLocation" x="138" y="1536"/>
         </scene>
-        <!--View Controller-->
+        <!--Movie Details View Controller-->
         <scene sceneID="SjA-b5-5tq">
             <objects>
-                <viewController id="FL9-M1-WO8" sceneMemberID="viewController">
+                <viewController id="FL9-M1-WO8" customClass="MovieDetailsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="WHg-vq-HjI">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d6M-V4-4BH">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y9s-HS-dHr">
+                                        <rect key="frame" x="0.0" y="-88" width="414" height="287"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qwu-g8-yWb">
+                                        <rect key="frame" x="8" y="136" width="113" height="175"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gHQ-28-I8O">
+                                        <rect key="frame" x="142" y="204" width="264" height="67"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SiR-jn-rdN">
+                                        <rect key="frame" x="8" y="335" width="398" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.067802784970000002" green="0.067802784970000002" blue="0.067802784970000002" alpha="0.84705882349999995" colorSpace="custom" customColorSpace="displayP3"/>
+                                <viewLayoutGuide key="contentLayoutGuide" id="UHB-2B-0Eg"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="sOw-na-XPR"/>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="aph-G8-blw"/>
                     </view>
@@ -158,11 +197,11 @@
             </objects>
             <point key="canvasLocation" x="1319" y="1535"/>
         </scene>
-        <!--Item-->
+        <!--Navigation Controller-->
         <scene sceneID="3Sw-DH-7aW">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kVh-w8-io0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="cUV-tI-YBl"/>
+                    <tabBarItem key="tabBarItem" title="" image="iconmonstr-menu" id="cUV-tI-YBl"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Eeg-fl-8MT">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -177,7 +216,7 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="100.44642857142857"/>
         </scene>
-        <!--Movies Grid View Controller-->
+        <!--Movies-->
         <scene sceneID="v4B-y9-xoa">
             <objects>
                 <viewController id="5FW-3e-HBR" customClass="MoviesGridViewController" sceneMemberID="viewController">
@@ -212,16 +251,22 @@
                                         <size key="customSize" width="120" height="205"/>
                                         <connections>
                                             <outlet property="posterView" destination="iJd-hh-X14" id="BCY-ab-rx1"/>
+                                            <segue destination="Gv5-Tl-TKc" kind="show" id="aSd-an-A9t"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Nrh-w3-onQ">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="v2o-Sc-SHj"/>
                     </view>
-                    <navigationItem key="navigationItem" id="1be-mH-pXO"/>
+                    <navigationItem key="navigationItem" title="Movies" id="1be-mH-pXO"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="Nrh-w3-onQ" id="Il6-IK-bP2"/>
                         <outlet property="moviesCollectionView" destination="JZq-qG-oIM" id="tOh-7g-dQ8"/>
                     </connections>
                 </viewController>
@@ -229,11 +274,11 @@
             </objects>
             <point key="canvasLocation" x="1318.840579710145" y="817.63392857142856"/>
         </scene>
-        <!--Item-->
+        <!--Navigation Controller-->
         <scene sceneID="bJU-7A-F6e">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ur0-np-vlb" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Wdx-fb-OWr"/>
+                    <tabBarItem key="tabBarItem" title="" image="iconmonstr-view" id="Wdx-fb-OWr"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="uCP-cJ-Jvx">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -249,4 +294,11 @@
             <point key="canvasLocation" x="1320" y="100"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Fo7-4a-aWY"/>
+    </inferredMetricsTieBreakers>
+    <resources>
+        <image name="iconmonstr-menu" width="24" height="24"/>
+        <image name="iconmonstr-view" width="24" height="24"/>
+    </resources>
 </document>
