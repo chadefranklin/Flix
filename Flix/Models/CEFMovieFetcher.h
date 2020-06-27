@@ -14,10 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CEFMovieFetcher *)sharedObject;
 
-- (void) getMovies:(void (^)(NSArray * _Nonnull movies))completionHandler;
+//- (void) getMovies:(void (^)(NSArray * _Nonnull movies))completionHandler;
+- (void) getMovies:(void (^)(BOOL success))completionHandler;
 
-- (NSURL *) makePosterURL:(NSString *) partialPosterURLString;
-- (NSURL *) makeBackdropURL:(NSString *) partialBackdropURLString;
+- (NSURLRequest *) makeImageURLRequest:(NSString *) partialImageURLString;
+- (NSURLRequest *) makeSmallImageURLRequest:(NSString *) partialImageURLString;
 
 
 @property (nonatomic, strong) NSArray *movies;

@@ -10,7 +10,8 @@
 
 @implementation CEFMovieFetcher
 
-const NSString *BASE_IMAGE_URL = @"https://image.tmdb.org/t/p/w500";
+const NSString *BASE_IMAGE_URL_Large = @"https://image.tmdb.org/t/p/w500";
+const NSString *BASE_IMAGE_URL_Small = @"https://image.tmdb.org/t/p/w200";
 
 
 + (CEFMovieFetcher *)sharedObject {
@@ -30,7 +31,8 @@ const NSString *BASE_IMAGE_URL = @"https://image.tmdb.org/t/p/w500";
 //- (void) fetchMovies { NSLog(@"Fetching");}
 
 
-- (void) getMovies:(void (^)(NSArray * _Nonnull movies))completionHandler{
+//- (void) getMovies:(void (^)(NSArray * _Nonnull movies))completionHandler{
+- (void) getMovies:(void (^)(BOOL success))completionHandler{
     
     if(self.movies.count == 0) // haven't requested yet (or haven't received response yet. may need to check if i've requested already, but this works for now)
     {
@@ -40,6 +42,7 @@ const NSString *BASE_IMAGE_URL = @"https://image.tmdb.org/t/p/w500";
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                if (error != nil) {
                    NSLog(@"%@", [error localizedDescription]);
+                   completionHandler(NO);
                }
                else {
                    NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
@@ -49,28 +52,34 @@ const NSString *BASE_IMAGE_URL = @"https://image.tmdb.org/t/p/w500";
                    self.movies = dataDictionary[@"results"];
                    
                    NSLog(@"movies fetched successfully");
+                   completionHandler(YES);
                }
-            completionHandler(self.movies); // this should happen whether it errors or not.
+            //completionHandler(self.movies); // this should happen whether it errors or not.
+            
            }];
         [task resume];
     } else
     {
-        completionHandler(self.movies);
+        //completionHandler(self.movies);
+        completionHandler(YES);
     }
 }
 
-
-- (NSURL *) makePosterURL:(NSString *) partialPosterURLString{
-    NSString *fullPosterURLString = [BASE_IMAGE_URL stringByAppendingFormat:partialPosterURLString];
-    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
-    return posterURL;
+//- (NSURL *) makeImageURL:(NSString *) partialImageURLString{
+- (NSURLRequest *) makeImageURLRequest:(NSString *) partialImageURLString{
+    NSString *fullImageURLString = [BASE_IMAGE_URL_Large stringByAppendingFormat:partialImageURLString];
+    NSURL *imageURL = [NSURL URLWithString:fullImageURLString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
+    return request;
 }
 
-- (NSURL *) makeBackdropURL:(NSString *) partialBackdropURLString{
-    NSString *fullBackdropURLString = [BASE_IMAGE_URL stringByAppendingFormat:partialBackdropURLString];
-    NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
-    return backdropURL;
+- (NSURLRequest *) makeSmallImageURLRequest:(NSString *) partialImageURLString{
+    NSString *fullImageURLString = [BASE_IMAGE_URL_Small stringByAppendingFormat:partialImageURLString];
+    NSURL *imageURL = [NSURL URLWithString:fullImageURLString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
+    return request;
 }
+
 
 
 @end
