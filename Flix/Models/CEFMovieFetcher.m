@@ -29,7 +29,7 @@
 
 - (void) getMovies:(void (^)(NSArray * _Nonnull movies))completionHandler{
     
-    if(self.movies.count == 0) // haven't requested yet (or haven't received response yet. may need to check if i've requested already)
+    if(self.movies.count == 0) // haven't requested yet (or haven't received response yet. may need to check if i've requested already, but this works for now)
     {
         NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
         NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
@@ -46,9 +46,8 @@
                    self.movies = dataDictionary[@"results"];
                    
                    NSLog(@"movies fetched successfully");
-                   
-                   completionHandler(self.movies);
                }
+            completionHandler(self.movies); // this should happen whether it errors or not.
            }];
         [task resume];
     } else
