@@ -37,21 +37,6 @@
 }
 
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    
-    UITableViewCell *tappedCell = sender;
-    NSIndexPath *indexPath = [self.moviesTableView indexPathForCell:tappedCell];
-    NSDictionary *movie = self.movies[indexPath.row];
-    
-    MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
-    movieDetailsViewController.movie = movie;
-}
-
 
 //were named tableView by default
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -71,14 +56,13 @@
     cell.titleLabel.text = movie[@"title"];
     cell.synopsisLabel.text = movie[@"overview"];
     
-    NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
-    NSString *posterURLString = movie[@"poster_path"];
-    NSString *fullPosterURLString = [baseURLString stringByAppendingFormat:posterURLString];
-    
-    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
-    
-    cell.posterView.image = nil;
-    [cell.posterView setImageWithURL:posterURL];
+    //cell.posterView.image = nil;
+    if ([movie[@"poster_path"] isKindOfClass:[NSString class]]){
+        NSString *posterURLString = movie[@"poster_path"];
+        [cell.posterView setImageWithURL:[CEFMovieFetcher.sharedObject makeBackdropURL:posterURLString]];
+    } else {
+        cell.posterView.image = nil;
+    }
     
     return cell;
 }
@@ -106,5 +90,26 @@ void (^movieFetchCallback) (NSArray *movies) = ^(NSArray *movies){
     [self.moviesTableView reloadData];
 };
 */
+
+
+
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    UITableViewCell *tappedCell = sender;
+    NSIndexPath *indexPath = [self.moviesTableView indexPathForCell:tappedCell];
+    NSDictionary *movie = self.movies[indexPath.row];
+    
+    MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
+    movieDetailsViewController.movie = movie;
+}
+
+
+
 
 @end
