@@ -10,6 +10,7 @@
 #import "MovieDetailsViewController.h"
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
+#import "CEFMovieFetcher.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *moviesTableView;
@@ -27,10 +28,10 @@
     self.moviesTableView.dataSource = self;
     self.moviesTableView.delegate = self;
     
-    [self fetchMovies];
+    [self getMovies];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(getMovies) forControlEvents:UIControlEventValueChanged];
     //[self.moviesTableView addSubview:self.refreshControl];
     [self.moviesTableView insertSubview:self.refreshControl atIndex:0];
 }
@@ -84,33 +85,26 @@
 
 
 
-- (void)fetchMovies{
-    NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-           if (error != nil) {
-               NSLog(@"%@", [error localizedDescription]);
-           }
-           else {
-               NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-               
-               //NSLog(@"%@", dataDictionary);
-               
-               self.movies = dataDictionary[@"results"];
-               for(NSDictionary *movie in self.movies){
-                   NSLog(@"%@", movie[@"title"]);
-               }
-               
-               [self.moviesTableView reloadData];
-
-               // TODO: Get the array of movies
-               // TODO: Store the movies in a property to use elsewhere
-               // TODO: Reload your table view data
-           }
+- (void)getMovies{
+    [CEFMovieFetcher.sharedObject getMovies:^(NSArray *movies) {
+        self.movies = movies;
         [self.refreshControl endRefreshing];
-       }];
-    [task resume];
+        [self.moviesTableView reloadData];
+    }];
+    
 }
+
+// couldn't get non in-line block to work
+/*
+- (void)fetchMovies{
+    [CEFMovieFetcher.sharedObject getMovies:movieFetchCallback];
+    
+}
+void (^movieFetchCallback) (NSArray *movies) = ^(NSArray *movies){
+    self.movies = movies;
+    [self.refreshControl endRefreshing];
+    [self.moviesTableView reloadData];
+};
+*/
 
 @end

@@ -25,17 +25,34 @@
     // Do any additional setup after loading the view.
     
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
-    NSString *posterURLString = self.movie[@"poster_path"];
-    NSString *fullPosterURLString = [baseURLString stringByAppendingFormat:posterURLString];
     
-    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
-    [self.posterView setImageWithURL:posterURL];
     
-    NSString *backdropURLString = self.movie[@"backdrop_path"];
-    NSString *fullBackdropURLString = [baseURLString stringByAppendingFormat:backdropURLString];
+    if ([self.movie[@"poster_path"] isKindOfClass:[NSString class]]){
+        NSString *posterURLString = self.movie[@"poster_path"];
+        NSString *fullPosterURLString = [baseURLString stringByAppendingFormat:posterURLString];
+        
+        NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+        [self.posterView setImageWithURL:posterURL];
+    } else {
+        self.posterView.image = nil;
+    }
     
-    NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
-    [self.backdropView setImageWithURL:backdropURL];
+    
+    
+    // the mafia didn't have a backdrop. caused an error before using this.
+    // look more into network "error handling"
+    if ([self.movie[@"backdrop_path"] isKindOfClass:[NSString class]]){
+        NSString *backdropURLString = self.movie[@"backdrop_path"];
+        NSString *fullBackdropURLString = [baseURLString stringByAppendingFormat:backdropURLString];
+        
+        NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
+        [self.backdropView setImageWithURL:backdropURL];
+    } else {
+        self.backdropView.image = nil;
+    }
+
+    
+    
     
     self.titleLabel.text = self.movie[@"title"];
     self.synopsisLabel.text = self.movie[@"overview"];
