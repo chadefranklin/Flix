@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void) getMovies:(void (^)(NSArray * _Nonnull movies))completionHandler;
 
+- (NSURL *) makePosterURL:(NSString *) partialPosterURLString;
+- (NSURL *) makeBackdropURL:(NSString *) partialBackdropURLString;
+
 
 @property (nonatomic, strong) NSArray *movies;
 

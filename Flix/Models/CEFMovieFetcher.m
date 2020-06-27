@@ -10,6 +10,9 @@
 
 @implementation CEFMovieFetcher
 
+const NSString *BASE_IMAGE_URL = @"https://image.tmdb.org/t/p/w500";
+
+
 + (CEFMovieFetcher *)sharedObject {
     static CEFMovieFetcher *sharedClass = nil;
     static dispatch_once_t onceToken;
@@ -55,5 +58,19 @@
         completionHandler(self.movies);
     }
 }
+
+
+- (NSURL *) makePosterURL:(NSString *) partialPosterURLString{
+    NSString *fullPosterURLString = [BASE_IMAGE_URL stringByAppendingFormat:partialPosterURLString];
+    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    return posterURL;
+}
+
+- (NSURL *) makeBackdropURL:(NSString *) partialBackdropURLString{
+    NSString *fullBackdropURLString = [BASE_IMAGE_URL stringByAppendingFormat:partialBackdropURLString];
+    NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
+    return backdropURL;
+}
+
 
 @end
