@@ -28,7 +28,37 @@
     
     if ([self.movie[@"poster_path"] isKindOfClass:[NSString class]]){
         NSString *posterURLString = self.movie[@"poster_path"];
-        [self.posterView setImageWithURL:[CEFMovieFetcher.sharedObject makePosterURL:posterURLString]];
+        //[self.posterView setImageWithURL:[CEFMovieFetcher.sharedObject makePosterURL:posterURLString]];
+        
+        
+        
+        
+        NSURLRequest *request = [CEFMovieFetcher.sharedObject makeSmallImageURLRequest:posterURLString];
+
+        __weak MovieDetailsViewController *weakSelf = self;
+        [self.posterView setImageWithURLRequest:request placeholderImage:nil
+                                        success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *imageResponse, UIImage *image) {
+                                            
+                                            // imageResponse will be nil if the image is cached
+                                            if (imageResponse) {
+                                                NSLog(@"Image was NOT cached, fade in image");
+                                                weakSelf.posterView.alpha = 0.0;
+                                                weakSelf.posterView.image = image;
+                                                
+                                                //Animate UIImageView back to alpha 1 over 0.3sec
+                                                [UIView animateWithDuration:0.3 animations:^{
+                                                    weakSelf.posterView.alpha = 1.0;
+                                                }];
+                                            }
+                                            else {
+                                                NSLog(@"Image was cached so just update the image");
+                                                weakSelf.posterView.image = image;
+                                            }
+                                        }
+                                        failure:^(NSURLRequest *request, NSHTTPURLResponse * response, NSError *error) {
+                                            // do something for the failure condition
+                                            weakSelf.posterView.image = nil; // ???
+                                        }];
     } else {
         self.posterView.image = nil;
     }
@@ -39,7 +69,89 @@
     // look more into network "error handling"
     if ([self.movie[@"backdrop_path"] isKindOfClass:[NSString class]]){
         NSString *backdropURLString = self.movie[@"backdrop_path"];
-        [self.backdropView setImageWithURL:[CEFMovieFetcher.sharedObject makeBackdropURL:backdropURLString]];
+        //[self.backdropView setImageWithURL:[CEFMovieFetcher.sharedObject makeBackdropURL:backdropURLString]];
+        
+        
+        /*
+        NSURLRequest *request = [CEFMovieFetcher.sharedObject makeImageURLRequest:backdropURLString];
+        __weak MovieDetailsViewController *weakSelf = self;
+        [self.backdropView setImageWithURLRequest:request placeholderImage:nil
+        success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *imageResponse, UIImage *image) {
+            
+            // imageResponse will be nil if the image is cached
+            if (imageResponse) {
+                NSLog(@"Image was NOT cached, fade in image");
+                weakSelf.backdropView.alpha = 0.0;
+                weakSelf.backdropView.image = image;
+                
+                //Animate UIImageView back to alpha 1 over 0.3sec
+                [UIView animateWithDuration:0.3 animations:^{
+                    weakSelf.backdropView.alpha = 1.0;
+                }];
+            }
+            else {
+                NSLog(@"Image was cached so just update the image");
+                weakSelf.backdropView.image = image;
+            }
+        }
+        failure:^(NSURLRequest *request, NSHTTPURLResponse * response, NSError *error) {
+            // do something for the failure condition
+            weakself.backdropView.image = nil; // ???
+        }];
+        */
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        NSURLRequest *requestSmall = [CEFMovieFetcher.sharedObject makeSmallImageURLRequest:backdropURLString];
+        NSURLRequest *requestLarge = [CEFMovieFetcher.sharedObject makeImageURLRequest:backdropURLString];
+        
+        __weak MovieDetailsViewController *weakSelf = self;
+        [self.backdropView setImageWithURLRequest:requestSmall
+        placeholderImage:nil
+                 success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *smallImage) {
+                     
+                     // smallImageResponse will be nil if the smallImage is already available
+                     // in cache (might want to do something smarter in that case).
+                     weakSelf.backdropView.alpha = 0.0;
+                     weakSelf.backdropView.image = smallImage;
+                     
+                     [UIView animateWithDuration:0.3
+                                      animations:^{
+                                          
+                                          weakSelf.backdropView.alpha = 1.0;
+                                          
+                                      } completion:^(BOOL finished) {
+                                          // The AFNetworking ImageView Category only allows one request to be sent at a time
+                                          // per ImageView. This code must be in the completion block.
+                                          [weakSelf.backdropView setImageWithURLRequest:requestLarge
+                                                                placeholderImage:smallImage
+                                                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage * largeImage) {
+                                                                              weakSelf.backdropView.image = largeImage;
+                                                                }
+                                                                         failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                                             // do something for the failure condition of the large image request
+                                                                             // possibly setting the ImageView's image to a default image
+                                                                            // do nothing? might be able to keep small image
+                                                                         }];
+                                      }];
+                 }
+                 failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                     // do something for the failure condition
+                     // possibly try to get the large image
+                     weakSelf.backdropView.image = nil; // ???
+                 }];
+        
     } else {
         self.backdropView.image = nil;
     }
