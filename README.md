@@ -33,20 +33,24 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. Network delay / error handling.
+1. Network delay/error handling.
 2. Having the scroll view on the movie detail page automatically extend with the text.
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://g.recordit.co/jDFkvpxGAX.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+GIF created with [RecordIt](https://recordit.co/).
 
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+Implementing the singleton pattern challenged me, as well understanding blocks and their syntax.
+
+RecordIt would not record without an internet connection so I couldn't record the network error functionality.
 
 ## Credits
 
