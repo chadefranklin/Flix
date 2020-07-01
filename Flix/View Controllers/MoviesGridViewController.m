@@ -11,11 +11,12 @@
 #import "MovieCollectionCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "CEFMovieFetcher.h"
+#import "Movie.h"
 
 @interface MoviesGridViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *moviesCollectionView;
-@property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) NSMutableArray *movies;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -130,7 +131,7 @@
     
     UICollectionViewCell *tappedCell = sender;
     NSIndexPath *indexPath = [self.moviesCollectionView indexPathForCell:tappedCell];
-    NSDictionary *movie = self.movies[indexPath.item];
+    Movie *movie = self.movies[indexPath.item];
     
     MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
     movieDetailsViewController.movie = movie;
@@ -143,54 +144,9 @@
     
     
     
-    NSDictionary *movie = self.movies[indexPath.item];
-    
-    //cell.titleLabel.text = movie[@"title"];
-    //cell.synopsisLabel.text = movie[@"overview"];
-    
-    cell.posterView.image = nil;
-    if ([movie[@"poster_path"] isKindOfClass:[NSString class]]){
-        NSString *posterURLString = movie[@"poster_path"];
-        //[cell.posterView setImageWithURL:[CEFMovieFetcher.sharedObject makeBackdropURL:posterURLString]];
-        
-        
-        
-        
-        NSURLRequest *request = [CEFMovieFetcher.sharedObject makeSmallImageURLRequest:posterURLString];
+    //NSDictionary *movie = self.movies[indexPath.item];
+    cell.movie = self.movies[indexPath.item];
 
-        __weak MovieCollectionCell *weakCell = cell;
-        [cell.posterView setImageWithURLRequest:request placeholderImage:nil
-                                        success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *imageResponse, UIImage *image) {
-                                            
-                                            // imageResponse will be nil if the image is cached
-                                            if (imageResponse) {
-                                                NSLog(@"Image was NOT cached, fade in image");
-                                                weakCell.posterView.alpha = 0.0;
-                                                weakCell.posterView.image = image;
-                                                
-                                                //Animate UIImageView back to alpha 1 over 0.3sec
-                                                [UIView animateWithDuration:0.3 animations:^{
-                                                    weakCell.posterView.alpha = 1.0;
-                                                }];
-                                            }
-                                            else {
-                                                NSLog(@"Image was cached so just update the image");
-                                                weakCell.posterView.image = image;
-                                            }
-                                        }
-                                        failure:^(NSURLRequest *request, NSHTTPURLResponse * response, NSError *error) {
-                                            // do something for the failure condition
-                                            weakCell.posterView.image = nil;
-                                        }];
-    } else {
-        cell.posterView.image = nil;
-    }
-    
-    
-    
-    
-    
-    
     return cell;
 }
 

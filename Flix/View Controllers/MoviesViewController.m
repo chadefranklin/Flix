@@ -11,10 +11,11 @@
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "CEFMovieFetcher.h"
+#import "Movie.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *moviesTableView;
-@property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) NSMutableArray *movies;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -50,53 +51,9 @@
     //UITableViewCell *cell = [[UITableViewCell alloc] init];
     MovieCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MovieCell"];
     
+    cell.movie = self.movies[indexPath.row];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    NSDictionary *movie = self.movies[indexPath.row];
-    //cell.textLabel.text = [NSString stringWithFormat:@"row: %d, section %d", indexPath.row, indexPath.section];
-    
-    //cell.textLabel.text = movie[@"title"];
-    
-    cell.titleLabel.text = movie[@"title"];
-    cell.synopsisLabel.text = movie[@"overview"];
-    
-    //cell.posterView.image = nil;
-    if ([movie[@"poster_path"] isKindOfClass:[NSString class]]){
-        NSString *posterURLString = movie[@"poster_path"];
-        //[cell.posterView setImageWithURL:[CEFMovieFetcher.sharedObject makeBackdropURL:posterURLString]];
-        
-        
-        
-        
-        NSURLRequest *request = [CEFMovieFetcher.sharedObject makeSmallImageURLRequest:posterURLString];
-
-        __weak MovieCell *weakCell = cell; // is this correct usage?
-        [cell.posterView setImageWithURLRequest:request placeholderImage:nil
-                                        success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *imageResponse, UIImage *image) {
-                                            
-                                            // imageResponse will be nil if the image is cached
-                                            if (imageResponse) {
-                                                NSLog(@"Image was NOT cached, fade in image");
-                                                weakCell.posterView.alpha = 0.0;
-                                                weakCell.posterView.image = image;
-                                                
-                                                //Animate UIImageView back to alpha 1 over 0.3sec
-                                                [UIView animateWithDuration:0.3 animations:^{
-                                                    weakCell.posterView.alpha = 1.0;
-                                                }];
-                                            }
-                                            else {
-                                                NSLog(@"Image was cached so just update the image");
-                                                weakCell.posterView.image = image;
-                                            }
-                                        }
-                                        failure:^(NSURLRequest *request, NSHTTPURLResponse * response, NSError *error) {
-                                            // do something for the failure condition
-                                            weakCell.posterView.image = nil;
-                                        }];
-    } else {
-        cell.posterView.image = nil;
-    }
     
     return cell;
 }
@@ -109,9 +66,11 @@
     [CEFMovieFetcher.sharedObject getMovies:^(BOOL success) {
         if(success){
             //self.movies = movies;
+            NSLog(@"success");
             self.movies = CEFMovieFetcher.sharedObject.movies;
             [self.moviesTableView reloadData];
         } else {
+            NSLog(@"fail");
             // show error
             [self displayFetchMovieAlert];
         }
@@ -182,7 +141,7 @@ void (^movieFetchCallback) (NSArray *movies) = ^(NSArray *movies){
     
     UITableViewCell *tappedCell = sender;
     NSIndexPath *indexPath = [self.moviesTableView indexPathForCell:tappedCell];
-    NSDictionary *movie = self.movies[indexPath.row];
+    Movie *movie = self.movies[indexPath.row];
     
     MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
     movieDetailsViewController.movie = movie;

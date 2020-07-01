@@ -26,14 +26,8 @@
     // Do any additional setup after loading the view.
     
     
-    if ([self.movie[@"poster_path"] isKindOfClass:[NSString class]]){
-        NSString *posterURLString = self.movie[@"poster_path"];
-        //[self.posterView setImageWithURL:[CEFMovieFetcher.sharedObject makePosterURL:posterURLString]];
-        
-        
-        
-        
-        NSURLRequest *request = [CEFMovieFetcher.sharedObject makeSmallImageURLRequest:posterURLString];
+    if (self.movie.posterUrl){
+        NSURLRequest *request = [NSURLRequest requestWithURL:self.movie.posterUrl];
 
         __weak MovieDetailsViewController *weakSelf = self;
         [self.posterView setImageWithURLRequest:request placeholderImage:nil
@@ -67,54 +61,9 @@
     
     // the mafia didn't have a backdrop. caused an error before using this.
     // look more into network "error handling"
-    if ([self.movie[@"backdrop_path"] isKindOfClass:[NSString class]]){
-        NSString *backdropURLString = self.movie[@"backdrop_path"];
-        //[self.backdropView setImageWithURL:[CEFMovieFetcher.sharedObject makeBackdropURL:backdropURLString]];
-        
-        
-        /*
-        NSURLRequest *request = [CEFMovieFetcher.sharedObject makeImageURLRequest:backdropURLString];
-        __weak MovieDetailsViewController *weakSelf = self;
-        [self.backdropView setImageWithURLRequest:request placeholderImage:nil
-        success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *imageResponse, UIImage *image) {
-            
-            // imageResponse will be nil if the image is cached
-            if (imageResponse) {
-                NSLog(@"Image was NOT cached, fade in image");
-                weakSelf.backdropView.alpha = 0.0;
-                weakSelf.backdropView.image = image;
-                
-                //Animate UIImageView back to alpha 1 over 0.3sec
-                [UIView animateWithDuration:0.3 animations:^{
-                    weakSelf.backdropView.alpha = 1.0;
-                }];
-            }
-            else {
-                NSLog(@"Image was cached so just update the image");
-                weakSelf.backdropView.image = image;
-            }
-        }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse * response, NSError *error) {
-            // do something for the failure condition
-            weakself.backdropView.image = nil; // ???
-        }];
-        */
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        NSURLRequest *requestSmall = [CEFMovieFetcher.sharedObject makeSmallImageURLRequest:backdropURLString];
-        NSURLRequest *requestLarge = [CEFMovieFetcher.sharedObject makeImageURLRequest:backdropURLString];
+    if (self.movie.smallBackdropUrl){
+        NSURLRequest *requestSmall = [NSURLRequest requestWithURL:self.movie.smallBackdropUrl];
+        NSURLRequest *requestLarge = [NSURLRequest requestWithURL:self.movie.largeBackdropUrl];
         
         __weak MovieDetailsViewController *weakSelf = self;
         [self.backdropView setImageWithURLRequest:requestSmall
@@ -159,8 +108,8 @@
     
     
     
-    self.titleLabel.text = self.movie[@"title"];
-    self.synopsisLabel.text = self.movie[@"overview"];
+    self.titleLabel.text = self.movie.title;
+    self.synopsisLabel.text = self.movie.overview;
     
     // dont do in auto layout
     [self.titleLabel sizeToFit];
